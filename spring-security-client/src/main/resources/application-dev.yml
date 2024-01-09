@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    username: postgres
+    password: Fec!#@04012003
+    url: jdbc:postgresql://localhost:5432/dcb_user_registration
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true

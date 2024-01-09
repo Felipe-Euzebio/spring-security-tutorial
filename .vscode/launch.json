@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SpringSecurityClientApplication<spring-security-client>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.dailycodebuffer.client.SpringSecurityClientApplication",
+            "projectName": "spring-security-client",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
