@@ -9,13 +9,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dailycodebuffer.client.entities.User;
+import com.dailycodebuffer.client.entities.VerificationToken;
 import com.dailycodebuffer.client.events.RegistrationCompleteEvent;
 import com.dailycodebuffer.client.models.UserModel;
 import com.dailycodebuffer.client.services.UserService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 public class RegistrationController {
 
 	@Autowired
@@ -46,6 +49,17 @@ public class RegistrationController {
 			return "Bad user";
 		}
 	}
+	
+	@GetMapping("resendVerifyToken")
+	public String resendVerificationToken(@RequestParam("token") String oldToken, HttpServletRequest request) {
+		VerificationToken verificationToken = userService.generateNewVerificationToken(oldToken);
+		
+		User user = verificationToken.getUser();
+		
+		resendVerificationTokenMail(user, applicationUrl(request), verificationToken);
+		
+		return "Verification link sent";			
+	}
 
 	private String applicationUrl(HttpServletRequest request) {
 		return "http://" + 
@@ -53,6 +67,13 @@ public class RegistrationController {
 			":" + 
 			request.getServerPort() + 
 			request.getContextPath();
+	}
+	
+	private void resendVerificationTokenMail(User user, String applicationUrl, VerificationToken verificationToken) {
+        //Send Mail to user (mimicking)
+        String url = applicationUrl + "/verifyRegistration?token=" + verificationToken.getToken();
+	
+        log.info("Click the link to verify your account: {}", url);
 	}
 	
 }
