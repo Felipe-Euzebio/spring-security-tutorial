@@ -88,9 +88,22 @@ public class RegistrationController {
 
 		if(!user.isPresent()) return "Invalid token";
 
-		userService.changeUserPassword(user.get(), passwordModel.getNewPassword());
+		userService.changePassword(user.get(), passwordModel.getNewPassword());
 
 		return "Password reset successfully";
+	}
+
+	@PostMapping("/changePassword")
+	public String changePassword(@RequestBody PasswordModel passwordModel){
+		User user = userService.findUserByEmail(passwordModel.getEmail());
+
+		if(user == null) return "Invalid user";
+
+		if(!userService.checkIfValidOldPassword(user, passwordModel.getOldPassword())) return "Invalid old password";
+
+		userService.changePassword(user, passwordModel.getNewPassword());
+
+		return "Password changed successfully";
 	}
 
 	private String applicationUrl(HttpServletRequest request) {
